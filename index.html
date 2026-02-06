@@ -3,61 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Información de Docentes</title>
-    <link rel="stylesheet" href="src/css/styles.css">
+    <title>Sistema Docentes - UTC</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h1 { color: #333; margin-bottom: 20px; }
+        #status { padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .loading { background: #e3f2fd; color: #1976d2; }
+        .success { background: #e8f5e9; color: #388e3c; }
+        .error { background: #ffebee; color: #d32f2f; }
+        pre { background: #f5f5f5; padding: 10px; overflow-x: auto; margin: 10px 0; border-radius: 4px; font-size: 12px; }
+    </style>
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <h1>Sistema de Información de Docentes</h1>
-            <p class="subtitle">Consulta tu información personal</p>
-        </header>
-
-        <main class="main-content">
-            <div class="loading" id="loading">
-                <p>Cargando información...</p>
-            </div>
-
-            <div class="teacher-info" id="teacherInfo" style="display: none;">
-                <div class="card">
-                    <h2>Información Personal</h2>
-                    
-                    <div class="info-grid">
-                        <div class="info-field">
-                            <label class="field-label">Primer Nombre</label>
-                            <p class="field-value" id="firstName">—</p>
-                        </div>
-
-                        <div class="info-field">
-                            <label class="field-label">Segundo Nombre</label>
-                            <p class="field-value" id="secondName">—</p>
-                        </div>
-
-                        <div class="info-field">
-                            <label class="field-label">Primer Apellido</label>
-                            <p class="field-value" id="firstLastName">—</p>
-                        </div>
-
-                        <div class="info-field">
-                            <label class="field-label">Segundo Apellido</label>
-                            <p class="field-value" id="secondLastName">—</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="error" id="error" style="display: none;">
-                <p id="errorMessage"></p>
-            </div>
-        </main>
-
-        <footer class="footer">
-            <p>&copy; 2026 Universidad Autónoma de Manizales. Todos los derechos reservados.</p>
-        </footer>
+        <h1>Sistema de Información de Docentes</h1>
+        <div id="status" class="loading">Esperando URL del Apps Script...</div>
+        <div id="data"></div>
     </div>
 
     <script src="src/js/config.js"></script>
-    <script src="src/js/api.js"></script>
     <script src="src/js/app.js"></script>
 </body>
 </html>
