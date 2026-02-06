@@ -4,7 +4,7 @@
  */
 
 const CONFIG = {
-    // IMPORTANTE: Reemplaza esta URL con la de tu Web App de Google Apps Script
-    API_URL: "https://script.google.com/macros/d/TU_DEPLOYMENT_ID/usercopy/exec",
+    // URL del Web App de Google Apps Script
+    API_URL: "https://script.google.com/macros/s/AKfycbwCrPIKE83uUMXGxIGKuLuxerEz73n3Zess4rVQFCXAWcSJUGUZoH8ZvVDMaqCV87vk/exec",
     TIMEOUT: 10000 // 10 segundos
 };
