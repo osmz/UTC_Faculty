@@ -6,17 +6,17 @@ Aplicación web que permite visualizar la información personal de docentes usan
 ## 🏗️ Estructura del Proyecto
 
 ```
-informationTeacherUTC/
+UTC_Faculty/
 ├── Data.gsheet              # Google Sheet con los datos de docentes
+├── index.html               # Página principal (HTML)
 ├── src/                     # Carpeta de código fuente
-│   ├── index.html           # Página principal (HTML)
 │   ├── css/
 │   │   └── styles.css       # Estilos de la aplicación
 │   ├── js/
 │   │   ├── config.js        # Configuración global
 │   │   ├── api.js           # Cliente para comunicarse con la API
 │   │   └── app.js           # Lógica principal de la aplicación
-│   └── images/              # Imágenes (para futuros usos)
+│   ├── images/              # Imágenes (para futuros usos)
 └── README.md                # Este archivo
 ```
 
@@ -40,7 +40,7 @@ informationTeacherUTC/
 
 ## 📁 Descripción de Archivos
 
-### `src/index.html`
+### `index.html`
 - Estructura HTML de la página
 - 4 campos para mostrar: Primer Nombre, Segundo Nombre, Primer Apellido, Segundo Apellido
 - Importa los archivos CSS y JS en orden correcto
@@ -86,7 +86,7 @@ Si los nombres de las columnas son diferentes, actualiza el objeto `FIELDS` en `
 ## 🚀 Cómo Usar
 
 1. Asegúrate de que el URL de la API esté correcto en `src/js/config.js`
-2. Abre `src/index.html` en un navegador
+2. Abre `index.html` en un navegador
 3. Deberías ver tu información personal cargada
 
 ## ⚠️ Notas Importantes
