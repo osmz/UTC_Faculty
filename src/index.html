@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Información de Docentes</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Sistema de Información de Docentes</h1>
+            <p class="subtitle">Consulta tu información personal</p>
+        </header>
+
+        <main class="main-content">
+            <div class="loading" id="loading">
+                <p>Cargando información...</p>
+            </div>
+
+            <div class="teacher-info" id="teacherInfo" style="display: none;">
+                <div class="card">
+                    <h2>Información Personal</h2>
+                    
+                    <div class="info-grid">
+                        <div class="info-field">
+                            <label class="field-label">Primer Nombre</label>
+                            <p class="field-value" id="firstName">—</p>
+                        </div>
+
+                        <div class="info-field">
+                            <label class="field-label">Segundo Nombre</label>
+                            <p class="field-value" id="secondName">—</p>
+                        </div>
+
+                        <div class="info-field">
+                            <label class="field-label">Primer Apellido</label>
+                            <p class="field-value" id="firstLastName">—</p>
+                        </div>
+
+                        <div class="info-field">
+                            <label class="field-label">Segundo Apellido</label>
+                            <p class="field-value" id="secondLastName">—</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="error" id="error" style="display: none;">
+                <p id="errorMessage"></p>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2026 Universidad Autónoma de Manizales. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
