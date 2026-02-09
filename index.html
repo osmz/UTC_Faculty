@@ -3,49 +3,160 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Búsqueda de Docentes - Universidad Autónoma de Manizales</title>
+  <title>Información de Docentes - Universidad Autónoma de Manizales</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <div class="container">
-    <h1>🔍 Búsqueda de Docentes</h1>
+    <h1>📋 Información de Docentes</h1>
     <p class="subtitle">Universidad Autónoma de Manizales</p>
     
     <div class="search-group">
       <input 
         type="text" 
         id="busqueda" 
-        placeholder="Escribe el nombre del docente..." 
+        placeholder="Buscar por nombre, cédula o departamento..." 
         autocomplete="off"
       >
       <button id="btnBuscar">Buscar</button>
+      <button id="btnLimpiar" style="background: #999; margin-left: 5px;">Limpiar</button>
     </div>
 
     <div class="cargando" id="cargando">⏳ Cargando datos...</div>
     <div class="error" id="error"></div>
 
-    <div id="resultados">
-      <div class="campo">
-        <div class="etiqueta">Cédula</div>
-        <div class="valor" id="id">—</div>
+    <!-- SECCIÓN ENCONTRADA (oculta hasta que se busque) -->
+    <div id="resultadoContainer" style="display: none;">
+      
+      <!-- ENCABEZADO CON CARGO Y NOMBRE -->
+      <div class="encabezado">
+        <div class="cargo" id="cargo">—</div>
+        <div class="nombre-completo" id="nombreCompleto">—</div>
       </div>
-      <div class="campo">
-        <div class="etiqueta">Primer Nombre</div>
-        <div class="valor" id="nombre1">—</div>
-      </div>
-      <div class="campo">
-        <div class="etiqueta">Segundo Nombre</div>
-        <div class="valor" id="nombre2">—</div>
-      </div>
-      <div class="campo">
-        <div class="etiqueta">Primer Apellido</div>
-        <div class="valor" id="apellido1">—</div>
-      </div>
-      <div class="campo">
-        <div class="etiqueta">Segundo Apellido</div>
-        <div class="valor" id="apellido2">—</div>
-      </div>
+
+      <!-- SECCIÓN: INFORMACIÓN PERSONAL -->
+      <section class="seccion">
+        <h2 class="titulo-seccion">👤 Información Personal</h2>
+        <div class="campos-doble">
+          <div class="campo">
+            <label class="etiqueta">Tipo de Identificación</label>
+            <div class="valor" id="tipoId">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Número de Identificación</label>
+            <div class="valor" id="numeroId">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Lugar de Expedición</label>
+            <div class="valor" id="lugarExp">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Fecha de Expedición</label>
+            <div class="valor" id="fechaExp">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Primer Nombre</label>
+            <div class="valor" id="nombre1">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Segundo Nombre</label>
+            <div class="valor" id="nombre2">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Primer Apellido</label>
+            <div class="valor" id="apellido1">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Segundo Apellido</label>
+            <div class="valor" id="apellido2">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Fecha de Nacimiento</label>
+            <div class="valor" id="fechaNac">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Edad</label>
+            <div class="valor" id="edad">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Número de Contacto</label>
+            <div class="valor" id="contacto">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Tipo de Sangre (RH)</label>
+            <div class="valor" id="rh">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Género</label>
+            <div class="valor" id="genero">—</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN: INFORMACIÓN LABORAL -->
+      <section class="seccion">
+        <h2 class="titulo-seccion">💼 Información Laboral</h2>
+        <div class="campos-doble">
+          <div class="campo">
+            <label class="etiqueta">Departamento</label>
+            <div class="valor" id="departamento">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Estado</label>
+            <div class="valor" id="estado">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Dedicación</label>
+            <div class="valor" id="dedicacion">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Estatus</label>
+            <div class="valor" id="estatus">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Fecha de la Novedad</label>
+            <div class="valor" id="fechaNovedad">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Correo Institucional</label>
+            <div class="valor" id="correoIns">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Correo Personal</label>
+            <div class="valor" id="correoPersonal">—</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN: FORMACIÓN ACADÉMICA -->
+      <section class="seccion">
+        <h2 class="titulo-seccion">🎓 Formación Académica</h2>
+        <div class="campos-doble">
+          <div class="campo">
+            <label class="etiqueta">Máximo Nivel de Formación</label>
+            <div class="valor" id="nivelFormacion">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Área de Conocimiento</label>
+            <div class="valor" id="areaConocimiento">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Título Obtenido</label>
+            <div class="valor" id="titulo">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">Institución</label>
+            <div class="valor" id="institucion">—</div>
+          </div>
+          <div class="campo">
+            <label class="etiqueta">País</label>
+            <div class="valor" id="pais">—</div>
+          </div>
+        </div>
+      </section>
+
     </div>
+
   </div>
 
   <footer>
@@ -61,7 +172,8 @@
     // Elementos del DOM
     const inputBusqueda = document.getElementById("busqueda");
     const btnBuscar = document.getElementById("btnBuscar");
-    const divResultados = document.getElementById("resultados");
+    const btnLimpiar = document.getElementById("btnLimpiar");
+    const divResultadoContainer = document.getElementById("resultadoContainer");
     const divError = document.getElementById("error");
     const divCargando = document.getElementById("cargando");
 
@@ -86,38 +198,72 @@
       
       if (!termino) {
         divError.style.display = "none";
-        divResultados.style.display = "none";
+        divResultadoContainer.style.display = "none";
         return;
       }
 
       const resultados = allDocentes.filter(doc => {
-        const nombre1 = (doc["Nombre 1"] || "").toLowerCase();
-        const nombre2 = (doc["Nombre 2"] || "").toLowerCase();
-        const apellido1 = (doc["Apellido 1"] || "").toLowerCase();
-        const apellido2 = (doc["Apellido 2"] || "").toLowerCase();
+        const nombre = (doc["Nombre Completo"] || "").toLowerCase();
+        const numId = (doc["Número de Identificación"] || "").toString().toLowerCase();
+        const departamento = (doc["Departamento"] || "").toLowerCase();
+        const nombre1 = (doc["Primer Nombre"] || "").toLowerCase();
+        const apellido1 = (doc["Primer Apellido"] || "").toLowerCase();
         
-        return nombre1.includes(termino) || 
-               nombre2.includes(termino) || 
-               apellido1.includes(termino) || 
-               apellido2.includes(termino);
+        return nombre.includes(termino) || 
+               numId.includes(termino) || 
+               departamento.includes(termino) ||
+               nombre1.includes(termino) ||
+               apellido1.includes(termino);
       });
 
       if (resultados.length === 0) {
-        mostrarError("❌ No se encontró ningún docente con ese nombre");
-        divResultados.style.display = "none";
+        mostrarError("❌ No se encontró ningún docente con ese criterio");
+        divResultadoContainer.style.display = "none";
         return;
       }
 
       // Mostrar el primer resultado
       const docente = resultados[0];
-      document.getElementById("id").textContent = docente.id || "—";
-      document.getElementById("nombre1").textContent = docente["Nombre 1"] || "—";
-      document.getElementById("nombre2").textContent = docente["Nombre 2"] || "—";
-      document.getElementById("apellido1").textContent = docente["Apellido 1"] || "—";
-      document.getElementById("apellido2").textContent = docente["Apellido 2"] || "—";
-
+      mostrarDocente(docente);
       divError.style.display = "none";
-      divResultados.style.display = "block";
+      divResultadoContainer.style.display = "block";
+    }
+
+    function mostrarDocente(doc) {
+      // Encabezado
+      document.getElementById("cargo").textContent = doc["Cargo"] || "—";
+      document.getElementById("nombreCompleto").textContent = doc["Nombre Completo"] || "—";
+
+      // Información Personal
+      document.getElementById("tipoId").textContent = doc["Tipo de Identificación"] || "—";
+      document.getElementById("numeroId").textContent = doc["Número de Identificación"] || "—";
+      document.getElementById("lugarExp").textContent = doc["Lugar de Expedición"] || "—";
+      document.getElementById("fechaExp").textContent = doc["Fecha de Expedición"] || "—";
+      document.getElementById("nombre1").textContent = doc["Primer Nombre"] || "—";
+      document.getElementById("nombre2").textContent = doc["Segundo Nombre"] || "—";
+      document.getElementById("apellido1").textContent = doc["Primer Apellido"] || "—";
+      document.getElementById("apellido2").textContent = doc["Segundo Apellido"] || "—";
+      document.getElementById("fechaNac").textContent = doc["Fecha de Nacimiento"] || "—";
+      document.getElementById("edad").textContent = doc["Edad"] || "—";
+      document.getElementById("contacto").textContent = doc["Número de Contacto"] || "—";
+      document.getElementById("rh").textContent = doc["RH"] || "—";
+      document.getElementById("genero").textContent = doc["Genero"] || "—";
+
+      // Información Laboral
+      document.getElementById("departamento").textContent = doc["Departamento"] || "—";
+      document.getElementById("estado").textContent = doc["Estado"] || "—";
+      document.getElementById("dedicacion").textContent = doc["Dedicación"] || "—";
+      document.getElementById("estatus").textContent = doc["Estatus"] || "—";
+      document.getElementById("fechaNovedad").textContent = doc["Fecha de la Novedad"] || "—";
+      document.getElementById("correoIns").textContent = doc["Correo Institucional"] || "—";
+      document.getElementById("correoPersonal").textContent = doc["Correo Personal"] || "—";
+
+      // Formación Académica
+      document.getElementById("nivelFormacion").textContent = doc["Máximo Nivel de Formación"] || "—";
+      document.getElementById("areaConocimiento").textContent = doc["Área de Conocimiento"] || "—";
+      document.getElementById("titulo").textContent = doc["Titulo Obtenido"] || "—";
+      document.getElementById("institucion").textContent = doc["Institución"] || "—";
+      document.getElementById("pais").textContent = doc["Pais"] || "—";
     }
 
     function mostrarError(mensaje) {
@@ -125,8 +271,16 @@
       divError.style.display = "block";
     }
 
+    function limpiar() {
+      inputBusqueda.value = "";
+      divError.style.display = "none";
+      divResultadoContainer.style.display = "none";
+      inputBusqueda.focus();
+    }
+
     // Event listeners
     btnBuscar.addEventListener("click", buscarDocente);
+    btnLimpiar.addEventListener("click", limpiar);
     inputBusqueda.addEventListener("keypress", (e) => {
       if (e.key === "Enter") buscarDocente();
     });

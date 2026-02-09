@@ -1,5 +1,5 @@
 /* 
-  Estilos de la Aplicación de Búsqueda de Docentes
+  Estilos de la Aplicación de Información de Docentes
   Universidad Autónoma de Manizales
   Colores Institucionales: #0069A3 (Azul) y #F4D73B (Amarillo)
 */
@@ -20,7 +20,7 @@ body {
 }
 
 .container {
-  max-width: 600px;
+  max-width: 900px;
   margin: auto;
   background: white;
   padding: 30px;
@@ -70,45 +70,24 @@ button {
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
-  transition: background 0.3s;
+  transition: all 0.3s;
 }
 
 button:hover { 
   background: #F4D73B;
   color: #0069A3;
-}
-
-#resultados {
-  display: none;
-  background: #f9f9f9;
-  padding: 20px;
-  border-radius: 8px;
-  border-left: 4px solid #0069A3;
-}
-
-.campo {
-  margin-bottom: 15px;
-}
-
-.etiqueta {
-  font-weight: bold;
-  color: #0069A3;
-  font-size: 12px;
-  text-transform: uppercase;
-}
-
-.valor {
-  font-size: 16px;
-  color: #333;
-  padding: 5px 0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .error {
   color: #d32f2f;
-  padding: 10px;
+  padding: 15px;
   background: #ffebee;
   border-radius: 5px;
   display: none;
+  border-left: 4px solid #d32f2f;
+  margin-bottom: 20px;
 }
 
 .cargando {
@@ -116,6 +95,84 @@ button:hover {
   color: #0069A3;
   display: none;
   font-weight: bold;
+  padding: 20px;
+}
+
+/* ENCABEZADO CON CARGO Y NOMBRE */
+.encabezado {
+  background: linear-gradient(135deg, #0069A3 0%, #004a7a 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.cargo {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.9;
+  margin-bottom: 5px;
+}
+
+.nombre-completo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* SECCIONES */
+.seccion {
+  margin-bottom: 30px;
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 5px solid #0069A3;
+}
+
+.titulo-seccion {
+  color: #0069A3;
+  font-size: 18px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #F4D73B;
+}
+
+/* CAMPOS EN DOBLE COLUMNA */
+.campos-doble {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.campo {
+  background: white;
+  padding: 15px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.campo:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.etiqueta {
+  font-weight: bold;
+  color: #0069A3;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.valor {
+  font-size: 16px;
+  color: #333;
+  word-break: break-word;
+  line-height: 1.4;
 }
 
 footer {
@@ -134,4 +191,32 @@ footer p {
   font-weight: bold;
   font-size: 14px;
   margin-bottom: 5px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+    max-width: 100%;
+  }
+
+  .campos-doble {
+    grid-template-columns: 1fr;
+  }
+
+  .search-group {
+    flex-direction: column;
+  }
+
+  .search-group button {
+    width: 100%;
+  }
+
+  .nombre-completo {
+    font-size: 18px;
+  }
+
+  .titulo-seccion {
+    font-size: 16px;
+  }
 }
