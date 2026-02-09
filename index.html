@@ -172,7 +172,8 @@
   </footer>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzcxg1TmzSoTZ94hAVpF522LHTd_3Mf28W4oMM6qXAKqptwlGthC53R_v2-f5Togxpa/exec";
+    //const API_URL = "https://script.google.com/macros/s/AKfycbzcxg1TmzSoTZ94hAVpF522LHTd_3Mf28W4oMM6qXAKqptwlGthC53R_v2-f5Togxpa/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbzqoc3BdJEjP1NrQ_LqDzlcQZ5VUntixoBSABhpKQe43c8oYxIxwNJ-qWN5kEzFwVgC/exec";
     let allDocentes = [];
 
     // Elementos del DOM
@@ -199,19 +200,47 @@
     const divError = document.getElementById("error");
     const divCargando = document.getElementById("cargando");
 
+//    // Cargar datos al iniciar
+//    async function cargarDatos() {
+//      divCargando.style.display = "block";
+//      divError.style.display = "none";
+//      try {
+//        const response = await fetch(API_URL);
+//        if (!response.ok) throw new Error("Error al conectar con la API");
+//        allDocentes = await response.json();
+//        divCargando.style.display = "none";
+//      } catch (err) {
+//        divCargando.style.display = "none";
+//        mostrarError("No se pudieron cargar los datos: " + err.message);
+//      }
+//    }
+
     // Cargar datos al iniciar
     async function cargarDatos() {
-      divCargando.style.display = "block";
-      divError.style.display = "none";
-      try {
-        const response = await fetch(API_URL);
-        if (!response.ok) throw new Error("Error al conectar con la API");
-        allDocentes = await response.json();
-        divCargando.style.display = "none";
-      } catch (err) {
-        divCargando.style.display = "none";
-        mostrarError("No se pudieron cargar los datos: " + err.message);
-      }
+        divCargando.style.display = "block";
+        divError.style.display = "none";
+
+        try {
+            const response = await fetch(API_URL);
+            if (!response.ok) throw new Error("Error al conectar con la API");
+
+            const data = await response.json();
+
+            // 🔐 PASO 6: validar autorización
+            if (data.error) {
+            throw new Error("No tienes permisos para ver esta información");
+            }
+
+            allDocentes = data; // ← solo si está autorizado
+            divCargando.style.display = "none";
+
+            // aquí ya puedes llamar a renderTabla() o lo que uses
+            renderTabla(allDocentes);
+
+        } catch (err) {
+            divCargando.style.display = "none";
+            mostrarError("No se pudieron cargar los datos: " + err.message);
+        }
     }
 
     // Buscar docente
