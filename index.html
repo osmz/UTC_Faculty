@@ -1,37 +1,207 @@
-<button id="btn">Cargar docentes</button>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Búsqueda de Docentes</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    h1 { color: #333; margin-bottom: 30px; text-align: center; }
+    .search-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    input {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+    input:focus { outline: none; border-color: #667eea; }
+    button {
+      padding: 12px 20px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    button:hover { background: #764ba2; }
+    #resultados {
+      display: none;
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+      border-left: 4px solid #667eea;
+    }
+    .campo {
+      margin-bottom: 15px;
+    }
+    .etiqueta {
+      font-weight: bold;
+      color: #667eea;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    .valor {
+      font-size: 16px;
+      color: #333;
+      padding: 5px 0;
+    }
+    .error {
+      color: #d32f2f;
+      padding: 10px;
+      background: #ffebee;
+      border-radius: 5px;
+      display: none;
+    }
+    .cargando {
+      text-align: center;
+      color: #667eea;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 Búsqueda de Docentes</h1>
+    
+    <div class="search-group">
+      <input 
+        type="text" 
+        id="busqueda" 
+        placeholder="Escribe el nombre del docente..." 
+        autocomplete="off"
+      >
+      <button id="btnBuscar">Buscar</button>
+    </div>
 
-<table border="1">
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Programa</th>
-      <th>Correo</th>
-    </tr>
-  </thead>
-  <tbody id="tabla"></tbody>
-</table>
+    <div class="cargando" id="cargando">Cargando...</div>
+    <div class="error" id="error"></div>
 
-<script>
-const API_URL = "https://script.google.com/macros/s/AKfycbzcxg1TmzSoTZ94hAVpF522LHTd_3Mf28W4oMM6qXAKqptwlGthC53R_v2-f5Togxpa/exec";
+    <div id="resultados">
+      <div class="campo">
+        <div class="etiqueta">Cédula</div>
+        <div class="valor" id="id">—</div>
+      </div>
+      <div class="campo">
+        <div class="etiqueta">Primer Nombre</div>
+        <div class="valor" id="nombre1">—</div>
+      </div>
+      <div class="campo">
+        <div class="etiqueta">Segundo Nombre</div>
+        <div class="valor" id="nombre2">—</div>
+      </div>
+      <div class="campo">
+        <div class="etiqueta">Primer Apellido</div>
+        <div class="valor" id="apellido1">—</div>
+      </div>
+      <div class="campo">
+        <div class="etiqueta">Segundo Apellido</div>
+        <div class="valor" id="apellido2">—</div>
+      </div>
+    </div>
+  </div>
 
-document.getElementById("btn").addEventListener("click", () => {
-  fetch(API_URL)
-    .then(res => res.json())
-    .then(data => {
-      const tbody = document.getElementById("tabla");
-      tbody.innerHTML = "";
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbzcxg1TmzSoTZ94hAVpF522LHTd_3Mf28W4oMM6qXAKqptwlGthC53R_v2-f5Togxpa/exec";
+    let allDocentes = [];
 
-      data.forEach(d => {
-        tbody.innerHTML += `
-          <tr>
-            <td>${d.nombre}</td>
-            <td>${d.programa}</td>
-            <td>${d.correo}</td>
-          </tr>
-        `;
+    // Elementos del DOM
+    const inputBusqueda = document.getElementById("busqueda");
+    const btnBuscar = document.getElementById("btnBuscar");
+    const divResultados = document.getElementById("resultados");
+    const divError = document.getElementById("error");
+    const divCargando = document.getElementById("cargando");
+
+    // Cargar datos al iniciar
+    async function cargarDatos() {
+      divCargando.style.display = "block";
+      divError.style.display = "none";
+      try {
+        const response = await fetch(API_URL);
+        if (!response.ok) throw new Error("Error al conectar con la API");
+        allDocentes = await response.json();
+        divCargando.style.display = "none";
+      } catch (err) {
+        divCargando.style.display = "none";
+        mostrarError("No se pudieron cargar los datos: " + err.message);
+      }
+    }
+
+    // Buscar docente
+    function buscarDocente() {
+      const termino = inputBusqueda.value.trim().toLowerCase();
+      
+      if (!termino) {
+        divError.style.display = "none";
+        divResultados.style.display = "none";
+        return;
+      }
+
+      const resultados = allDocentes.filter(doc => {
+        const nombre1 = (doc["Nombre 1"] || "").toLowerCase();
+        const nombre2 = (doc["Nombre 2"] || "").toLowerCase();
+        const apellido1 = (doc["Apellido 1"] || "").toLowerCase();
+        const apellido2 = (doc["Apellido 2"] || "").toLowerCase();
+        
+        return nombre1.includes(termino) || 
+               nombre2.includes(termino) || 
+               apellido1.includes(termino) || 
+               apellido2.includes(termino);
       });
-    })
-    .catch(() => alert("Error cargando datos"));
-});
-</script>
+
+      if (resultados.length === 0) {
+        mostrarError("No se encontró ningún docente con ese nombre");
+        divResultados.style.display = "none";
+        return;
+      }
+
+      // Mostrar el primer resultado
+      const docente = resultados[0];
+      document.getElementById("id").textContent = docente.id || "—";
+      document.getElementById("nombre1").textContent = docente["Nombre 1"] || "—";
+      document.getElementById("nombre2").textContent = docente["Nombre 2"] || "—";
+      document.getElementById("apellido1").textContent = docente["Apellido 1"] || "—";
+      document.getElementById("apellido2").textContent = docente["Apellido 2"] || "—";
+
+      divError.style.display = "none";
+      divResultados.style.display = "block";
+    }
+
+    function mostrarError(mensaje) {
+      divError.textContent = mensaje;
+      divError.style.display = "block";
+    }
+
+    // Event listeners
+    btnBuscar.addEventListener("click", buscarDocente);
+    inputBusqueda.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") buscarDocente();
+    });
+
+    // Cargar datos al abrir la página
+    cargarDatos();
+  </script>
+
+</body>
+</html>
 
