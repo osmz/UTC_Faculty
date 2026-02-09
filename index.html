@@ -1,32 +1,37 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Prueba Apps Script</title>
-</head>
-<body>
+<button id="btn">Cargar docentes</button>
 
-  <h1>Prueba conexión</h1>
-  <button id="btn">Probar API</button>
-  <pre id="resultado"></pre>
+<table border="1">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Programa</th>
+      <th>Correo</th>
+    </tr>
+  </thead>
+  <tbody id="tabla"></tbody>
+</table>
 
-  <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbyY-CGKvzjRzqWe01ljzkqoQvpNG_unac10KsXJFCBdWL9ojqZZ9kDicEMReI7t8ooa/exec";
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbzcxg1TmzSoTZ94hAVpF522LHTd_3Mf28W4oMM6qXAKqptwlGthC53R_v2-f5Togxpa/exec";
 
-    document.getElementById("btn").addEventListener("click", () => {
-      fetch(API_URL)
-        .then(res => res.json())
-        .then(data => {
-          document.getElementById("resultado").textContent =
-            JSON.stringify(data, null, 2);
-        })
-        .catch(err => {
-          document.getElementById("resultado").textContent =
-            "Error de conexión";
-          console.error(err);
-        });
-    });
-  </script>
+document.getElementById("btn").addEventListener("click", () => {
+  fetch(API_URL)
+    .then(res => res.json())
+    .then(data => {
+      const tbody = document.getElementById("tabla");
+      tbody.innerHTML = "";
 
-</body>
-</html>
+      data.forEach(d => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${d.nombre}</td>
+            <td>${d.programa}</td>
+            <td>${d.correo}</td>
+          </tr>
+        `;
+      });
+    })
+    .catch(() => alert("Error cargando datos"));
+});
+</script>
+
