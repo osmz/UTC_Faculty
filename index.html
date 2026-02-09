@@ -3,86 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Búsqueda de Docentes</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      padding: 20px;
-    }
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    }
-    h1 { color: #333; margin-bottom: 30px; text-align: center; }
-    .search-group {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    input {
-      flex: 1;
-      padding: 12px;
-      border: 2px solid #ddd;
-      border-radius: 5px;
-      font-size: 14px;
-    }
-    input:focus { outline: none; border-color: #667eea; }
-    button {
-      padding: 12px 20px;
-      background: #667eea;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
-    button:hover { background: #764ba2; }
-    #resultados {
-      display: none;
-      background: #f9f9f9;
-      padding: 20px;
-      border-radius: 8px;
-      border-left: 4px solid #667eea;
-    }
-    .campo {
-      margin-bottom: 15px;
-    }
-    .etiqueta {
-      font-weight: bold;
-      color: #667eea;
-      font-size: 12px;
-      text-transform: uppercase;
-    }
-    .valor {
-      font-size: 16px;
-      color: #333;
-      padding: 5px 0;
-    }
-    .error {
-      color: #d32f2f;
-      padding: 10px;
-      background: #ffebee;
-      border-radius: 5px;
-      display: none;
-    }
-    .cargando {
-      text-align: center;
-      color: #667eea;
-      display: none;
-    }
-  </style>
+  <title>Búsqueda de Docentes - Universidad Autónoma de Manizales</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <div class="container">
     <h1>🔍 Búsqueda de Docentes</h1>
+    <p class="subtitle">Universidad Autónoma de Manizales</p>
     
     <div class="search-group">
       <input 
@@ -94,7 +21,7 @@
       <button id="btnBuscar">Buscar</button>
     </div>
 
-    <div class="cargando" id="cargando">Cargando...</div>
+    <div class="cargando" id="cargando">⏳ Cargando datos...</div>
     <div class="error" id="error"></div>
 
     <div id="resultados">
@@ -120,6 +47,12 @@
       </div>
     </div>
   </div>
+
+  <footer>
+    <div class="logo-text">Universidad Autónoma de Manizales</div>
+    <p>&copy; 2026 UAM. Todos los derechos reservados.</p>
+    <p>Sistema de Información de Docentes</p>
+  </footer>
 
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzcxg1TmzSoTZ94hAVpF522LHTd_3Mf28W4oMM6qXAKqptwlGthC53R_v2-f5Togxpa/exec";
@@ -170,7 +103,7 @@
       });
 
       if (resultados.length === 0) {
-        mostrarError("No se encontró ningún docente con ese nombre");
+        mostrarError("❌ No se encontró ningún docente con ese nombre");
         divResultados.style.display = "none";
         return;
       }
