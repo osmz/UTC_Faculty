@@ -25,6 +25,12 @@
     <div class="cargando" id="cargando">⏳ Cargando datos...</div>
     <div class="error" id="error"></div>
 
+    <!-- SECCIÓN DE RESULTADOS MÚLTIPLES -->
+    <div id="resultadosMultiplesContainer" style="display: none;">
+      <h3 style="color: #0069A3; margin-bottom: 15px;">Se encontraron múltiples docentes. Selecciona uno:</h3>
+      <div id="listaResultados" style="display: grid; gap: 10px;"></div>
+    </div>
+
     <!-- SECCIÓN ENCONTRADA (oculta hasta que se busque) -->
     <div id="resultadoContainer" style="display: none;">
       
@@ -174,6 +180,8 @@
     const btnBuscar = document.getElementById("btnBuscar");
     const btnLimpiar = document.getElementById("btnLimpiar");
     const divResultadoContainer = document.getElementById("resultadoContainer");
+    const divResultadosMultiplesContainer = document.getElementById("resultadosMultiplesContainer");
+    const divListaResultados = document.getElementById("listaResultados");
     const divError = document.getElementById("error");
     const divCargando = document.getElementById("cargando");
 
@@ -199,6 +207,7 @@
       if (!termino) {
         divError.style.display = "none";
         divResultadoContainer.style.display = "none";
+        divResultadosMultiplesContainer.style.display = "none";
         return;
       }
 
@@ -219,14 +228,88 @@
       if (resultados.length === 0) {
         mostrarError("❌ No se encontró ningún docente con ese criterio");
         divResultadoContainer.style.display = "none";
+        divResultadosMultiplesContainer.style.display = "none";
         return;
       }
 
-      // Mostrar el primer resultado
-      const docente = resultados[0];
-      mostrarDocente(docente);
+      // Si hay UN SOLO resultado
+      if (resultados.length === 1) {
+        divResultadosMultiplesContainer.style.display = "none";
+        mostrarDocente(resultados[0]);
+        divError.style.display = "none";
+        divResultadoContainer.style.display = "block";
+        return;
+      }
+
+      // Si hay MÚLTIPLES resultados - mostrar lista
+      mostrarListaResultados(resultados);
       divError.style.display = "none";
+      divResultadoContainer.style.display = "none";
+    }
+
+    // Mostrar lista de docentes para seleccionar
+    function mostrarListaResultados(resultados) {
+      divListaResultados.innerHTML = "";
+      
+      resultados.forEach((doc, index) => {
+        const item = document.createElement("div");
+        item.style.cssText = `
+          background: white;
+          border: 2px solid #0069A3;
+          border-radius: 6px;
+          padding: 15px;
+          cursor: pointer;
+          transition: all 0.3s;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        `;
+        
+        item.innerHTML = `
+          <div>
+            <div style="font-weight: bold; color: #0069A3; font-size: 14px;">${doc["Nombre Completo"] || "—"}</div>
+            <div style="color: #666; font-size: 12px;">ID: ${doc["Número de Identificación"] || "—"} | ${doc["Departamento"] || "—"}</div>
+            <div style="color: #999; font-size: 11px;">${doc["Cargo"] || "—"}</div>
+          </div>
+          <button style="
+            background: #0069A3;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+          ">Ver</button>
+        `;
+        
+        item.addEventListener("mouseenter", () => {
+          item.style.background = "#e3f2fd";
+          item.style.borderColor = "#F4D73B";
+          item.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.15)";
+        });
+        
+        item.addEventListener("mouseleave", () => {
+          item.style.background = "white";
+          item.style.borderColor = "#0069A3";
+          item.style.boxShadow = "none";
+        });
+        
+        item.addEventListener("click", () => {
+          mostraDocenteYOcultarLista(doc);
+        });
+        
+        divListaResultados.appendChild(item);
+      });
+
+      divResultadosMultiplesContainer.style.display = "block";
+    }
+
+    // Mostrar docente seleccionado de la lista
+    function mostraDocenteYOcultarLista(doc) {
+      mostrarDocente(doc);
+      divResultadosMultiplesContainer.style.display = "none";
       divResultadoContainer.style.display = "block";
+      window.scrollTo(0, 0); // Scroll al inicio
     }
 
     function mostrarDocente(doc) {
@@ -275,6 +358,7 @@
       inputBusqueda.value = "";
       divError.style.display = "none";
       divResultadoContainer.style.display = "none";
+      divResultadosMultiplesContainer.style.display = "none";
       inputBusqueda.focus();
     }
 
