@@ -176,6 +176,20 @@
     let allDocentes = [];
 
     // Elementos del DOM
+      // Función para formatear fechas ISO a yyyy/mm/dd
+      function formatearFecha(fechaISO) {
+        if (!fechaISO) return "—";
+        try {
+          const fecha = new Date(fechaISO);
+          const year = fecha.getFullYear();
+          const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+          const dia = String(fecha.getDate()).padStart(2, '0');
+          return `${year}/${mes}/${dia}`;
+        } catch (e) {
+          return fechaISO; // Si no se puede parsear, devuelve el valor original
+        }
+      }
+
     const inputBusqueda = document.getElementById("busqueda");
     const btnBuscar = document.getElementById("btnBuscar");
     const btnLimpiar = document.getElementById("btnLimpiar");
@@ -321,12 +335,12 @@
       document.getElementById("tipoId").textContent = doc["Tipo de Identificación"] || "—";
       document.getElementById("numeroId").textContent = doc["Número de Identificación"] || "—";
       document.getElementById("lugarExp").textContent = doc["Lugar de Expedición"] || "—";
-      document.getElementById("fechaExp").textContent = doc["Fecha de Expedición"] || "—";
+        document.getElementById("fechaExp").textContent = formatearFecha(doc["Fecha de Expedición"]);
       document.getElementById("nombre1").textContent = doc["Primer Nombre"] || "—";
       document.getElementById("nombre2").textContent = doc["Segundo Nombre"] || "—";
       document.getElementById("apellido1").textContent = doc["Primer Apellido"] || "—";
       document.getElementById("apellido2").textContent = doc["Segundo Apellido"] || "—";
-      document.getElementById("fechaNac").textContent = doc["Fecha de Nacimiento"] || "—";
+        document.getElementById("fechaNac").textContent = formatearFecha(doc["Fecha de Nacimiento"]);
       document.getElementById("edad").textContent = doc["Edad"] || "—";
       document.getElementById("contacto").textContent = doc["Número de Contacto"] || "—";
       document.getElementById("rh").textContent = doc["RH"] || "—";
