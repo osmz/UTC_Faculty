@@ -1,23 +1,5 @@
-function doGet() {
-  // Lista blanca de correos permitidos (coordination). Reemplaza por los correos reales.
-  const ALLOWED_EMAILS = [
-    'coord1@autonoma.edu.co',
-    'coord2@autonoma.edu.co'
-  ];
-
-  // Intentar obtener el email del usuario autenticado
-  const userEmail = Session.getActiveUser && Session.getActiveUser().getEmail ? Session.getActiveUser().getEmail() : '';
-
-  // Si hay lista de correos y el usuario no está en ella, devolver 403 JSON
-  if (ALLOWED_EMAILS.length > 0) {
-    if (!userEmail || ALLOWED_EMAILS.indexOf(userEmail.toLowerCase()) === -1) {
-      const payload = { error: 'access_denied', message: 'Acceso denegado: usuario no autorizado.' };
-      return ContentService
-        .createTextOutput(JSON.stringify(payload))
-        .setMimeType(ContentService.MimeType.JSON);
-    }
-  }
-
+// 1️⃣ Obtener docentes (tu lógica original)
+function obtenerDocentes() {
   const sheet = SpreadsheetApp
     .getActiveSpreadsheet()
     .getSheetByName("docentes");
@@ -25,13 +7,47 @@ function doGet() {
   const values = sheet.getDataRange().getValues();
   const headers = values.shift();
 
-  const data = values.map(row => {
+  return values.map(row => {
     let obj = {};
     headers.forEach((h, i) => obj[h] = row[i] || "");
     return obj;
   });
+}
+
+// 2️⃣ Validar usuario y clave
+function validarUsuario(usuario, clave) {
+  const sheet = SpreadsheetApp
+    .getActiveSpreadsheet()
+    .getSheetByName("usuarios");
+
+  const data = sheet.getDataRange().getValues();
+  data.shift();
+
+  return data.some(row =>
+    row[0] === usuario && row[1] === clave
+  );
+}
+
+// 3️⃣ ÚNICO punto de entrada
+function doPost(e) {
+  const params = JSON.parse(e.postData.contents);
+
+  const autorizado = validarUsuario(
+    params.usuario,
+    params.clave
+  );
+
+  if (!autorizado) {
+    return ContentService
+      .createTextOutput(
+        JSON.stringify({ error: "Credenciales inválidas" })
+      )
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 
   return ContentService
-    .createTextOutput(JSON.stringify(data))
+    .createTextOutput(
+      JSON.stringify(obtenerDocentes())
+    )
     .setMimeType(ContentService.MimeType.JSON);
 }
