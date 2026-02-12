@@ -1,101 +1,253 @@
 # Sistema de Información de Docentes
 
 ## 📋 Descripción
-Aplicación web que permite visualizar la información personal de docentes usando Google Sheets + Google Apps Script.
+Aplicación web de control de acceso que permite visualizar información completa de docentes de la Universidad Autónoma de Manizales. El sistema utiliza un formulario de login seguro contra Google Apps Script y Google Sheets como base de datos.
+
+**Arquitectura:**
+- **Frontend:** HTML5 + CSS3 + Vanilla JavaScript (GitHub Pages)
+- **Backend:** Google Apps Script con validación de credenciales
+- **Base de Datos:** Google Sheets con hojas "docentes" y "usuarios"
+
+---
 
 ## 🏗️ Estructura del Proyecto
 
 ```
 UTC_Faculty/
-├── Data.gsheet              # Google Sheet con los datos de docentes
-├── index.html               # Página principal (HTML)
-├── src/                     # Carpeta de código fuente
-│   ├── css/
-│   │   └── styles.css       # Estilos de la aplicación
-│   ├── js/
-│   │   ├── config.js        # Configuración global
-│   │   ├── api.js           # Cliente para comunicarse con la API
-│   │   └── app.js           # Lógica principal de la aplicación
-│   ├── images/              # Imágenes (para futuros usos)
-└── README.md                # Este archivo
+├── index.html               # 🔐 Página de login (usuario + contraseña)
+├── docentes.html            # 👥 Página de información de docentes
+├── css/
+│   └── styles.css           # Estilos compartidos (login + docentes)
+├── js/
+│   ├── api.js               # Funciones de comunicación con API
+│   ├── login.js             # Lógica del formulario de login
+│   └── docentes.js          # Búsqueda y visualización de docentes
+├── codigo.gs                # Code de Google Apps Script (para referencia)
+├── README.md                # Este archivo
+└── Data.gsheet              # Google Sheet con datos (referencia)
 ```
 
-## 🔄 Flujo de la Aplicación
+---
 
-1. **Frontend (HTML/CSS/JavaScript)**
-   - El usuario abre `index.html`
-   - La aplicación muestra un estado de carga
-   - JavaScript se comunica con la API
+## 🔄 Flujo de Autenticación
 
-2. **Backend (Google Apps Script)**
-   - Valida que el usuario esté autorizado
-   - Lee los datos de la hoja "Hoja" en Google Sheets
-   - Devuelve los datos en formato JSON
+```
+┌─────────────┐
+│ index.html  │  ← Usuario abre el sitio
+└──────┬──────┘
+       │
+       ▼
+┌──────────────────────────────┐
+│ Ingresa usuario + contraseña │  ← login.js captura datos
+└──────┬───────────────────────┘
+       │
+       ▼
+┌──────────────────────────────────┐
+│ login() en api.js                │
+│ Envía POST a Apps Script         │
+└──────┬───────────────────────────┘
+       │
+       ▼
+┌──────────────────────────────────┐
+│ Apps Script (codigo.gs)          │
+│ - validarUsuario()               │
+│ - Compara contra hoja "usuarios" │
+└──────┬───────────────────────────┘
+       │
+       ├─ ✅ Válido → Devuelve array de docentes
+       │
+       └─ ❌ Inválido → Devuelve { error: "..." }
+       │
+       ▼
+┌──────────────────────────────────┐
+│ login.js recibe respuesta         │
+│ - Si OK: Guarda en sessionStorage │
+│ - Redirige a docentes.html        │
+└──────┬───────────────────────────┘
+       │
+       ▼
+┌──────────────────────────────────┐
+│ docentes.html                    │
+│ - Carga docentes de session      │
+│ - Muestra buscador               │
+│ - Botón "Cerrar Sesión"          │
+└──────────────────────────────────┘
+```
 
-3. **Comunicación**
-   - Fetch realiza una solicitud GET al URL de la API
-   - La API valida el usuario autenticado en Google
-   - Si está autorizado, devuelve los datos
-   - Si no está autorizado, devuelve un error
+---
 
 ## 📁 Descripción de Archivos
 
-### `index.html`
-- Estructura HTML de la página
-- 4 campos para mostrar: Primer Nombre, Segundo Nombre, Primer Apellido, Segundo Apellido
-- Importa los archivos CSS y JS en orden correcto
+### `index.html` - Página de Login
+**Responsabilidad:** Autenticación del usuario
+- Formulario con campos: Usuario y Contraseña
+- Validación de campos (no vacíos)
+- Muestra estado de carga mientras se valida
+- Mensaje de error si credenciales son inválidas
+- Estilos responsivos y seguros
 
-### `src/css/styles.css`
-- Estilos responsivos
-- Diseño moderno con gradientes
-- Animaciones suaves para mejor UX
+### `docentes.html` - Página de Docentes
+**Responsabilidad:** Búsqueda y visualización
+- Buscador por: nombre, cédula, departamento
+- Muestra lista si hay múltiples coincidencias
+- Perfil completo en 3 secciones:
+  - 👤 **Información Personal** (ID, nombres, apellidos, edad, etc.)
+  - 💼 **Información Laboral** (departamento, cargo, correos, etc.)
+  - 🎓 **Formación Académica** (nivel, título, institución, etc.)
+- Botón "Cerrar Sesión" que borra datos y vuelve a login
 
-### `src/js/config.js`
-- URL de la API
-- Nombres de los campos esperados de Google Sheets
-- Mensajes de error centralizados
+### `css/styles.css` - Estilos Generales
+**Responsabilidad:** Diseño visual de ambas páginas
+- **Login:** Centrado, tarjeta moderna, colores institucionales
+- **Docentes:** Contenedor flexible, grid responsivo
+- **Colores:** #0069A3 (azul institucional), #F4D73B (amarillo)
+- **Tipografía:** Arial, estilos claros y legibles
+- **Responsive:** Adapta a móvil, tablet y desktop
 
-### `src/js/api.js`
-- Clase `APIClient` que maneja las llamadas a la API
-- `fetchTeacherData()`: Obtiene los datos del docente
-- `extractTeacherInfo()`: Procesa los datos para mostrarlos
+### `js/api.js` - Comunicación con Backend
+**Responsabilidad:** Conectar frontend ↔ Apps Script
+- `login(usuario, clave)` → Valida credenciales, retorna docentes
+- `formatearFecha(fechaISO)` → Convierte yyyy-mm-dd a yyyy/mm/dd
+- Errores claros si hay problemas de conexión
 
-### `src/js/app.js`
-- Clase `App` que maneja la lógica principal
-- `init()`: Inicia la aplicación
-- Maneja la visualización de estados (cargando, datos, error)
+### `js/login.js` - Lógica del Login
+**Responsabilidad:** Manejar el formulario de autenticación
+- Captura el evento `submit` del formulario
+- Valida que usuario y clave no estén vacíos
+- Llama a `login()` de api.js
+- Si es exitoso: Guarda datos en `sessionStorage` y redirige
+- Si falla: Muestra el error y permite reintentar
 
-## 🔑 Campos Esperados en Google Sheets
+### `js/docentes.js` - Lógica de Búsqueda
+**Responsabilidad:** Búsqueda y visualización de docentes
+- Verifica si usuario está autenticado (redirige a login si no)
+- Carga docentes desde `sessionStorage`
+- Busca por: nombre completo, cédula, departamento, primer nombre, apellido
+- Muestra lista si encuentra múltiples coincidencias
+- Renderiza perfil completo al seleccionar docente
+- Botón "Logout" que borra sesión
 
-Asegúrate de que la hoja "Hoja" tenga estas columnas:
-- `Primer Nombre`
-- `Segundo Nombre`
-- `Primer Apellido`
-- `Segundo Apellido`
+### `codigo.gs` - Backend en Google Apps Script
+**Responsabilidad:** Validación segura de credenciales y datos
+- `obtenerDocentes()` → Lee hoja "docentes" y retorna JSON
+- `validarUsuario(usuario, clave)` → Busca en hoja "usuarios"
+- `doPost(e)` → Punto de entrada, valida y retorna docentes o error
 
-Si los nombres de las columnas son diferentes, actualiza el objeto `FIELDS` en `config.js`.
+---
 
-## 📝 Próximos Pasos
+## 🔐 Estructura de Google Sheets
 
-1. ✅ Visualizar información personal (actual)
-2. ⬜ Mostrar todas las columnas de docentes
-3. ⬜ Crear una tabla/lista de todos los docentes
-4. ⬜ Agregar búsqueda y filtros
-5. ⬜ Agregar más funcionalidades
+### Hoja "docentes"
+Contiene información de los docentes. Ejemplo de columnas:
+```
+Nombre Completo | Número de Identificación | Cargo | Departamento | ...
+XXXX XXXXX      | XXXXXXXX                 | Prof  | Ingeniería   | ...
+```
+
+### Hoja "usuarios"
+Contiene credenciales autorizadas:
+```
+Usuario  | Contraseña   | rol
+---------|--------------|----------
+XXX      | XXXXX        | Coordinador
+XXXXX    | XXXXX        | Coordinador
+XXXX     | XXXXX        | Coordinador
+```
+
+---
 
 ## 🚀 Cómo Usar
 
-1. Asegúrate de que el URL de la API esté correcto en `src/js/config.js`
-2. Abre `index.html` en un navegador
-3. Deberías ver tu información personal cargada
+### Para Usuarios Finales
+1. Abre `index.html` en el navegador
+2. Ingresa usuario y contraseña (ej: `XXX` / `XXXXX`)
+3. Haz clic en "Iniciar Sesión"
+4. Usa el buscador para encontrar docentes
+5. Haz clic en "Cerrar Sesión" para salir
+
+### Para Desarrolladores
+
+#### Probar en Local
+```bash
+# Clonar el repositorio
+git clone https://github.com/osmz/UTC_Faculty.git
+cd UTC_Faculty
+
+# Abrir index.html en el navegador
+# (O usar un servidor local como Live Server de VS Code)
+```
+
+#### Actualizar Docentes o Usuarios
+1. Edita la hoja correspondiente en Google Sheets
+2. Apps Script leerá automáticamente los cambios
+3. Los cambios aparecen en la siguiente búsqueda
+
+#### Agregar Nuevos Campos
+1. Agrega la columna en Google Sheet
+2. El código leerá automáticamente (usa nombres exactos de columnas)
+3. En `docentes.html`, agrega un `<div class="campo">` para mostrarlo
+
+---
 
 ## ⚠️ Notas Importantes
 
-- Recuerda que Google Apps Script maneja la autenticación automáticamente
-- Los usuarios deben estar en la lista `allowedUsers` en el script
-- Si cambias los nombres de las columnas en Google Sheets, actualiza `config.js`
-- El timeout está configurado en 10 segundos
+### Validación de Credenciales
+- Las credenciales se validan en **Apps Script** (servidor)
+- Nunca se guarda la contraseña en el navegador
+- Se usa `sessionStorage` solo para la sesión actual (se borra al cerrar tab)
 
-## 📧 Información de Contacto
+### Nombres de Columnas
+- Deben ser **exactos** (mayúsculas/minúsculas)
+- Si cambias una columna en Google Sheet, actualiza `docentes.html`
 
-Para hacer cambios en el backend o agregar nuevos campos, coordina con el equipo de desarrollo.
+### Espacios en Blanco
+- El código usa `.trim()` para eliminar espacios accidentales
+- Válido para usuario: `"XXX"` o `" XXX "`
+
+### Tipos de Datos
+- Las contraseñas en Google Sheet se guardan como **texto** (no números)
+- Si una contraseña es `XXXX`, escribe `XXXX` (como texto)
+
+---
+
+## 🔧 Debugging
+
+### Ver Logs de Apps Script
+1. Abre Apps Script en Google Drive
+2. Ve a **Editor** → **Logs** (Ctrl+Enter después de ejecutar)
+3. Usa `Logger.log()` para ver qué validacio fallando
+
+### Ver Datos en sessionStorage
+En el navegador, abre **DevTools** (F12):
+```javascript
+console.log(sessionStorage.getItem("docentes"));
+console.log(sessionStorage.getItem("usuario"));
+```
+
+### Errores Comunes
+| Error | Causa | Solución |
+|-------|-------|----------|
+| "Credenciales inválidas" | Usuario o clave incorrectos | Verifica la hoja "usuarios" en Google Sheet |
+| Página en blanco después de login | sessionStorage vacío | Verifica que Apps Script devuelva JSON válido |
+| Búsqueda sin resultados | Campo de búsqueda vacío | Intenta con un nombre o cédula |
+
+---
+
+## 📊 Próximos Pasos
+
+- ✅ Sistema de autenticación
+- ✅ Búsqueda de docentes
+- ✅ Visualización de perfil completo
+- ⬜ Exportar información a PDF
+- ⬜ Historial de búsquedas
+- ⬜ Roles de usuario (admin, coordinador, etc.)
+
+---
+
+## 📧 Contacto
+
+Para reportar errores o solicitar mejoras, contacta al equipo de desarrollo.
+
+**Versión:** 2.0
+**Última actualización:** Febrero 2026
+
