@@ -176,13 +176,17 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("contacto").textContent = doc["Número de Contacto"] || "—";
     document.getElementById("rh").textContent = doc["RH"] || "—";
     document.getElementById("genero").textContent = doc["Genero"] || "—";
+    document.getElementById("direccion").textContent = doc["Dirección"] || "—";
+    document.getElementById("estadoCivil").textContent = doc["Estado civil"] || "—";
 
     // Información Laboral
     document.getElementById("departamento").textContent = doc["Departamento"] || "—";
-    document.getElementById("estado").textContent = doc["Estado"] || "—";
+    document.getElementById("estadoActual").textContent = doc["Estado actual"] || "—";
+    document.getElementById("fechaInicioVinculacion").textContent = formatearFecha(doc["Fecha Inicio Vinculación"]);
+    document.getElementById("fechaFinVinculacion").textContent = formatearFecha(doc["Fecha Fin Vinculación"]);
+    document.getElementById("fechaNovedad").textContent = formatearFecha(doc["Fecha de la Novedad"]);
+    document.getElementById("tiempoPrograma").textContent = doc["Tiempo en el Programa"] || "—";
     document.getElementById("dedicacion").textContent = doc["Dedicación"] || "—";
-    document.getElementById("estatus").textContent = doc["Estatus"] || "—";
-    document.getElementById("fechaNovedad").textContent = doc["Fecha de la Novedad"] || "—";
     document.getElementById("correoIns").textContent = doc["Correo Institucional"] || "—";
     document.getElementById("correoPersonal").textContent = doc["Correo Personal"] || "—";
 
