@@ -144,6 +144,11 @@ Nombre Completo | Número de Identificación | Cargo | Departamento | ...
 XXXX XXXXX      | XXXXXXXX                 | Prof  | Ingeniería   | ...
 ```
 
+**Campos destacados:**
+- **Información Personal:** Identificación, nombres, nacimiento, contacto, dirección, estado civil
+- **Información Laboral:** Departamento, estado actual, fechas de vinculación, dedicación, correos
+- **Formación Académica:** Nivel, área, título, institución, país
+
 ### Hoja "usuarios"
 Contiene credenciales autorizadas:
 ```
