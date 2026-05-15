@@ -90,10 +90,13 @@ UTC_Faculty/
 **Responsabilidad:** Búsqueda y visualización
 - Buscador por: nombre, cédula, departamento
 - Muestra lista si hay múltiples coincidencias
-- Perfil completo en 3 secciones:
+- Perfil completo en 4 secciones:
   - 👤 **Información Personal** (ID, nombres, apellidos, edad, etc.)
   - 💼 **Información Laboral** (departamento, cargo, correos, etc.)
-  - 🎓 **Formación Académica** (nivel, título, institución, etc.)
+       - 📋 **Información de Contratación** (forma de contratación y escalafón)
+       - 🎓 **Formación Académica** con 2 niveles de visualización:
+              - Resumen: máximo nivel, área, título, institución, país
+              - 📖 Detalle de Formación: tecnología, especialización tecnológica, pregrado, pregrado 2, especialización, maestría y doctorado (cada uno con fecha, institución y país)
 - Botón "Cerrar Sesión" que borra datos y vuelve a login
 
 ### `css/styles.css` - Estilos Generales
@@ -147,7 +150,16 @@ XXXX XXXXX      | XXXXXXXX                 | Prof  | Ingeniería   | ...
 **Campos destacados:**
 - **Información Personal:** Identificación, nombres, nacimiento, contacto, dirección, estado civil
 - **Información Laboral:** Departamento, estado actual, fechas de vinculación, dedicación, correos
-- **Formación Académica:** Nivel, área, título, institución, país
+- **Información de Contratación:** Forma de Contratación, Escalafón
+- **Formación Académica (Resumen):** Máximo Nivel de Formación, Área de Conocimiento, Titulo Obtenido, Institución, Pais
+- **Formación Académica (Detalle):**
+       - Tecnología, Fecha Tecnología, Institución Tecnología, Pais Tecnología
+       - Especialización Tecnológica, Fecha Especialización Tecnológica, Institución Especialización Tecnológica, Pais Especialización Tecnológica
+       - Pregrado, Fecha Pregrado, Institución Pregrado, Pais Pregrado
+       - Pregrado 2, Fecha Pregrado 2, Institución Pregrado 2, Pais Pregrado 2
+       - Especialización, Fecha Especialización, Institución Especialización, Pais Especialización
+       - Maestría, Fecha Maestría, Institución Maestría, Pais Maestría
+       - Doctorado, Fecha Doctorado, Institución Doctorado, Pais Doctorado
 
 ### Hoja "usuarios"
 Contiene credenciales autorizadas:
@@ -190,7 +202,8 @@ cd UTC_Faculty
 #### Agregar Nuevos Campos
 1. Agrega la columna en Google Sheet
 2. El código leerá automáticamente (usa nombres exactos de columnas)
-3. En `docentes.html`, agrega un `<div class="campo">` para mostrarlo
+3. Agrega el campo visual en `docentes.html`
+4. Mapea el campo en `js/docentes.js` con el nombre exacto del encabezado
 
 ---
 
@@ -203,7 +216,8 @@ cd UTC_Faculty
 
 ### Nombres de Columnas
 - Deben ser **exactos** (mayúsculas/minúsculas)
-- Si cambias una columna en Google Sheet, actualiza `docentes.html`
+- Si cambias una columna en Google Sheet, actualiza `js/docentes.js` (mapeo)
+- Verifica tildes y caracteres especiales: por ejemplo `Escalafón`, `Tecnología`, `Especialización Tecnológica`
 
 ### Espacios en Blanco
 - El código usa `.trim()` para eliminar espacios accidentales
@@ -219,8 +233,8 @@ cd UTC_Faculty
 
 ### Ver Logs de Apps Script
 1. Abre Apps Script en Google Drive
-2. Ve a **Editor** → **Logs** (Ctrl+Enter después de ejecutar)
-3. Usa `Logger.log()` para ver qué validacio fallando
+2. Ve a **Ejecuciones** y abre la ejecución más reciente
+3. Usa `Logger.log()` para ver qué validación está fallando
 
 ### Ver Datos en sessionStorage
 En el navegador, abre **DevTools** (F12):
@@ -253,6 +267,6 @@ console.log(sessionStorage.getItem("usuario"));
 
 Para reportar errores o solicitar mejoras, contacta al equipo de desarrollo.
 
-**Versión:** 2.0
-**Última actualización:** Febrero 2026
+**Versión:** 2.1
+**Última actualización:** Mayo 2026
 
