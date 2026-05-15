@@ -321,6 +321,16 @@ button:hover {
   border-bottom: 2px solid #F4D73B;
 }
 
+.subtitulo-seccion {
+  color: #0069A3;
+  font-size: 14px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
+  font-weight: 600;
+}
+
 /* CAMPOS EN DOBLE COLUMNA */
 .campos-doble {
   display: grid;

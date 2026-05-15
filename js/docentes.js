@@ -190,12 +190,44 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("correoIns").textContent = doc["Correo Institucional"] || "—";
     document.getElementById("correoPersonal").textContent = doc["Correo Personal"] || "—";
 
+    // Información de Contratación
+    document.getElementById("formaContratacion").textContent = doc["Forma de Contratación"] || "—";
+    document.getElementById("escalafon").textContent = doc["Escalafón"] || "—";
+
     // Formación Académica
     document.getElementById("nivelFormacion").textContent = doc["Máximo Nivel de Formación"] || "—";
     document.getElementById("areaConocimiento").textContent = doc["Área de Conocimiento"] || "—";
     document.getElementById("titulo").textContent = doc["Titulo Obtenido"] || "—";
     document.getElementById("institucion").textContent = doc["Institución"] || "—";
     document.getElementById("pais").textContent = doc["Pais"] || "—";
+    document.getElementById("tecnologia").textContent = doc["Tecnología"] || "—";
+    document.getElementById("fechaTecnologia").textContent = formatearFecha(doc["Fecha Tecnología"]);
+    document.getElementById("institucionTecnologia").textContent = doc["Institución Tecnología"] || "—";
+    document.getElementById("paisTecnologia").textContent = doc["Pais Tecnología"] || "—";
+    document.getElementById("especializacionTecnologia").textContent = doc["Especialización Tecnológica"] || "—";
+    document.getElementById("fechaEspecializacionTecnologia").textContent = formatearFecha(doc["Fecha Especialización Tecnológica"]);
+    document.getElementById("institucionEspecializacionTecnologia").textContent = doc["Institución Especialización Tecnológica"] || "—";
+    document.getElementById("paisEspecializacionTecnologia").textContent = doc["Pais Especialización Tecnológica"] || "—";
+    document.getElementById("pregrado").textContent = doc["Pregrado"] || "—";
+    document.getElementById("fechaPregrado").textContent = formatearFecha(doc["Fecha Pregrado"]);
+    document.getElementById("institucionPregrado").textContent = doc["Institución Pregrado"] || "—";
+    document.getElementById("paisPregrado").textContent = doc["Pais Pregrado"] || "—";
+    document.getElementById("pregrado2").textContent = doc["Pregrado 2"] || "—";
+    document.getElementById("fechaPregrado2").textContent = formatearFecha(doc["Fecha Pregrado 2"]);
+    document.getElementById("institucionPregrado2").textContent = doc["Institución Pregrado 2"] || "—";
+    document.getElementById("paisPregrado2").textContent = doc["Pais Pregrado 2"] || "—";
+    document.getElementById("especializacion").textContent = doc["Especialización"] || "—";
+    document.getElementById("fechaEspecializacion").textContent = formatearFecha(doc["Fecha Especialización"]);
+    document.getElementById("institucionEspecializacion").textContent = doc["Institución Especialización"] || "—";
+    document.getElementById("paisEspecializacion").textContent = doc["Pais Especialización"] || "—";
+    document.getElementById("maestria").textContent = doc["Maestría"] || "—";
+    document.getElementById("fechaMaestria").textContent = formatearFecha(doc["Fecha Maestría"]);
+    document.getElementById("institucionMaestria").textContent = doc["Institución Maestría"] || "—";
+    document.getElementById("paisMaestria").textContent = doc["Pais Maestría"] || "—";
+    document.getElementById("doctorado").textContent = doc["Doctorado"] || "—";
+    document.getElementById("fechaDoctorado").textContent = formatearFecha(doc["Fecha Doctorado"]);
+    document.getElementById("institucionDoctorado").textContent = doc["Institución Doctorado"] || "—";
+    document.getElementById("paisDoctorado").textContent = doc["Pais Doctorado"] || "—";
   }
 
   /**

@@ -7,11 +7,22 @@ function obtenerDocentes() {
   const values = sheet.getDataRange().getValues();
   const headers = values.shift();
 
-  return values.map(row => {
+  Logger.log("ENCABEZADOS DETECTADOS:");
+  Logger.log(headers);
+  Logger.log("Total de columnas: " + headers.length);
+
+  const docentes = values.map(row => {
     let obj = {};
     headers.forEach((h, i) => obj[h] = row[i] || "");
     return obj;
   });
+
+  Logger.log("PRIMER DOCENTE (completo):");
+  Logger.log(docentes[0]);
+  Logger.log("Forma de Contratación: " + docentes[0]["Forma de Contratación"]);
+  Logger.log("Escalafón: " + docentes[0]["Escalafón"]);
+
+  return docentes;
 }
 
 // 2️⃣ Validar usuario y clave
